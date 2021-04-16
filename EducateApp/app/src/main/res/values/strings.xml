@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">EducateApp</string>
+    <string name="verification_email_sent">Письмо с подтверждением отправлено</string>
+    <string name="update_email">Вы действительно хотите обновить e-mail адрес?</string>
+    <string name="enter_new_email">Введите новый e-mail адрес</string>
+    <string name="update">Обновить</string>
+    <string name="required_field">Заполните поле</string>
+    <string name="email_updated">E-mail адрес обновлен</string>
+    <string name="exception">Авторизуйтесь и попробуйте вновь</string>
+    <string name="cancel">Отмена</string>
+    <string name="del_question">Удалить аккаунт навсегда?</string>
+    <string name="sure_question">Вы уверены?</string>
+    <string name="ok">ОК</string>
+    <string name="account_del">Аккаунт удалён</string>
+    <string name="logout">Выйти</string>
+    <string name="reset_pswd">Сбросить пароль</string>
+    <string name="update_mail">Изменить e-mail</string>
+    <string name="delete_acc">Удалить аккаунт</string>
+    <string name="login">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="register_success">Вы успешно зарегистрированы</string>
+    <string name="forgot_pswd">Забыли пароль?</string>
+    <string name="email">E-mail адрес</string>
+    <string name="pswd">Пароль</string>
+    <string name="reset_pswd_quest">Хотите сбросить пароль?</string>
+    <string name="reset_link">Введите свой e-mail, чтобы получить ссылку для сброса пароля</string>
+    <string name="reset">Сбросить</string>
+    <string name="reset_email_sent">На Ваш e-mail отправлено письмо подтверждения</string>
+    <string name="email_miss">Введите e-mail</string>
+    <string name="pswd_miss">Введите пароль</string>
+    <string name="name_miss">Введите имя</string>
+    <string name="conf_pswd_miss">Подтвердите пароль</string>
+    <string name="phone_miss">Введите номер телефона</string>
+    <string name="CC_miss">Введите код страны</string>
+    <string name="pswd_dont_match">Пароли не совпадают</string>
+    <string name="data_validated">Данные сохранены</string>
+    <string name="pswd_updated">Пароль успешно изменен</string>
+    <string name="full_name">ФИО</string>
+    <string name="save">Сохранить</string>
+    <string name="new_pswd">Введите новый пароль</string>
+    <string name="exception_pswd">Неверный e-mail или пароль</string>
+    <string name="verify_email">Пожалуйста, подтвердите ваш e-mail</string>
+    <string name="verify">Подтвердить</string>
+    <string name="signin">Регистрация</string>
+    <string name="or">или</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="CC">Код</string>
+    <string name="login_phone">Войти по номеру телефона</string>
+    <string name="regenerate_OTP">Вы можете отправить код заново только через 60 секунд.</string>
+    <string name="resend">Отправить ещё раз</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dont_receive">Я не получил СМС код</string>
+    <string name="enter_otp">Введите код, указанный в сообщении, которое мы отправили вам по указаному номеру</string>
+    <string name="OTP_fail">Неверный код</string>
+    <string name="error">Ошибка</string>
+    <string name="phone_success">Аккаунт успешно создан и привязан к данному номеру</string>
+
+
+
+</resources>

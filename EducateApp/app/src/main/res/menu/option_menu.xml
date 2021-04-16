@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/resetUserPassword"
+        android:title="@string/reset_pswd" />
+    <item
+        android:id="@+id/updateEmailMenu"
+        android:title="@string/update_mail" />
+    <item
+        android:id="@+id/deletaAccountMenu"
+        android:title="@string/delete_acc" />
+</menu>
