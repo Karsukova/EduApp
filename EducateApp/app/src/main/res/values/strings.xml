@@ -54,8 +54,11 @@
     <string name="enter_otp">Введите код, указанный в сообщении, которое мы отправили вам по указаному номеру</string>
     <string name="OTP_fail">Неверный код</string>
     <string name="error">Ошибка</string>
+    <string name="teacher">Педагог</string>
+    <string name="child">Ребёнок</string>
     <string name="phone_success">Аккаунт успешно создан и привязан к данному номеру</string>
-
+    <string name="select_type">Выберите тип учетной записи</string>
+    <string name="select_one_type">Поставьте галочку напротив только одного из вариантов</string>
 
 
 </resources>

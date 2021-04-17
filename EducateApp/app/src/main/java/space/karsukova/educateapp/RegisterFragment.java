@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +25,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegisterFragment extends Fragment {
@@ -36,6 +43,9 @@ public class RegisterFragment extends Fragment {
     EditText registerFullName, registerEmail, registerPassword, registerConfPass, phoneCC, phoneNumber;
     Button registerUserBtn;
     FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    CheckBox isTeacherBox, isChildBox;
+
 
 
 
@@ -52,8 +62,28 @@ public class RegisterFragment extends Fragment {
         phoneNumber = v.findViewById(R.id.registerPhoneNumber);
         registerUserBtn = v.findViewById(R.id.regButton);
         fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USERS);
+        isTeacherBox = v.findViewById(R.id.check_teacher);
+        isChildBox = v.findViewById(R.id.check_child);
+
+        isChildBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    isTeacherBox.setChecked(false);
+                }
+            }
+        });
+        isTeacherBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    isChildBox.setChecked(false);
+                }
+            }
+        });
 
 
         registerUserBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,23 +109,44 @@ public class RegisterFragment extends Fragment {
                     phoneNumber.setError(getText(R.string.phone_miss));
                     return;
                 }
+                if(!(isTeacherBox.isChecked() || isChildBox.isChecked())){
+                    Toast.makeText(getActivity(), R.string.select_type, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (!registerPassword.getText().toString().equals(registerConfPass.getText().toString())) {
                     registerConfPass.setError(getText(R.string.pswd_dont_match));
                     return;
                 }
-                user = new User(registerFullName.getText().toString(), registerEmail.getText().toString(),
-                        phoneNumber.getText().toString());
+                //user = new User(registerFullName.getText().toString(), registerEmail.getText().toString(),
+                       // phoneNumber.getText().toString());
                 fAuth.createUserWithEmailAndPassword(registerEmail.getText().toString(), registerPassword.getText().toString())
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 FirebaseUser user = fAuth.getCurrentUser();
-                                updateUI(user);
-                                //Toast.makeText(getActivity(), R.string.register_success, Toast.LENGTH_SHORT).show();
-
                                 Intent phone = new Intent(getActivity(), VerifyPhone.class);
                                 number = phoneCC.getText().toString() + phoneNumber.getText().toString();
                                 phone.putExtra("number", number);
+                                //updateUI(user);
+                                //Toast.makeText(getActivity(), R.string.register_success, Toast.LENGTH_SHORT).show();
+                                DocumentReference df = fStore.collection("Users").document(user.getUid());
+                                Map<String,Object> userInfo = new HashMap<>();
+                                userInfo.put("FullName", registerFullName.getText().toString());
+                                userInfo.put("UserEmail", registerEmail.getText().toString());
+                                userInfo.put("PhoneNumber", phoneCC.getText().toString() + phoneNumber.getText().toString());
+                                if(isTeacherBox.isChecked()){
+                                    userInfo.put("isAdmin", "1");
+                                    phone.putExtra("isAdmin", "1");
+
+                                }
+                                if(isChildBox.isChecked()){
+                                    userInfo.put("isUser", "1");
+                                    phone.putExtra("isUser", "1");
+                                }
+                                df.set(userInfo);
+
+
+
                                 startActivity(phone);
                                 //Log.d(TAG, "onSuccess: " + "+" + phoneCC.getText().toString() +
                                         //phoneNumber.getText().toString());

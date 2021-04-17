@@ -22,7 +22,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyPhone extends AppCompatActivity {
-    public String Number_entered_by_user,code_by_system;
+    public String Number_entered_by_user,code_by_system, isAdmin, isUser;
     public CardView verify;
     public TextView resend;
     public PinView otp;
@@ -35,6 +35,9 @@ public class VerifyPhone extends AppCompatActivity {
         setContentView(R.layout.activity_verify_phone);
         Intent intent =getIntent();
         Number_entered_by_user=intent.getStringExtra("number");
+        isAdmin = intent.getStringExtra("isAdmin");
+        isUser = intent.getStringExtra("isUser");
+
         Toast.makeText(this, Number_entered_by_user, Toast.LENGTH_SHORT).show();
         verify=findViewById(R.id.verifybutton);
         resend=findViewById(R.id.resend);
@@ -115,8 +118,15 @@ public class VerifyPhone extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(VerifyPhone.this, R.string.phone_success, Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(VerifyPhone.this,MainActivity.class);
-                    startActivity(intent);
+                    if(isAdmin!=null){
+                        startActivity(new Intent(VerifyPhone.this, AdminActivity.class));
+                        return;
+
+                    }
+                    if (isUser!= null){
+                        startActivity(new Intent(VerifyPhone.this, MainActivity.class));
+                        return;
+                    }
                 }
                 else{
                     Toast.makeText(VerifyPhone.this, R.string.error, Toast.LENGTH_SHORT).show();

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginFragment extends Fragment {
 
@@ -26,6 +30,7 @@ public class LoginFragment extends Fragment {
 
     EditText username, password;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore fStore;
     AlertDialog.Builder reset_alert;
     LayoutInflater inflater;
 
@@ -40,6 +45,7 @@ public class LoginFragment extends Fragment {
         loginBtn= v.findViewById(R.id.loginbtn);
         forgotPasswordBtn = v.findViewById(R.id.forgotPasswordBtn);
         firebaseAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         reset_alert = new AlertDialog.Builder(getActivity());
 
         forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +98,8 @@ public class LoginFragment extends Fragment {
                         password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        checkUserAccessLevel(authResult.getUser().getUid());
+                        //startActivity(new Intent(getActivity(), MainActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -104,5 +111,24 @@ public class LoginFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void checkUserAccessLevel(String uid) {
+        DocumentReference df = fStore.collection("Users").document(uid);
+        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("TAG", "onSuccess"+documentSnapshot.getData());
+                if(documentSnapshot.getString("isAdmin")!=null){
+                    startActivity(new Intent(getActivity(), AdminActivity.class));
+                    return;
+
+                }
+                if (documentSnapshot.getString("isUser") != null){
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    return;
+                }
+            }
+        });
     }
 }
