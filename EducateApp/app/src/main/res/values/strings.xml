@@ -59,6 +59,16 @@
     <string name="phone_success">Аккаунт успешно создан и привязан к данному номеру</string>
     <string name="select_type">Выберите тип учетной записи</string>
     <string name="select_one_type">Поставьте галочку напротив только одного из вариантов</string>
+    <string name="upload_notice">Загрузить заметку</string>
+    <string name="upload_gallery">Загрузить изображения</string>
+    <string name="upload_pdf">Загрузить PDF</string>
+    <string name="group">Группы</string>
+    <string name="del_notice">Удалить уведомление</string>
+    <string name="select_image">Выберите изображение</string>
+    <string name="notice_title">Заголовок</string>
+    <string name="empty_field">Заполните поле</string>
+    <string name="notice_upload">Публикация добавлена</string>
+    <string name="uploading">Загрузка...</string>
 
 
 </resources>

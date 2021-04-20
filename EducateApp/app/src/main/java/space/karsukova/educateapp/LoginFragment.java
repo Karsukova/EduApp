@@ -131,4 +131,32 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            DocumentReference df = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.getString("isAdmin")!=null){
+                        startActivity(new Intent(getActivity(), AdminActivity.class));
+                        return;
+
+                    }
+                    if (documentSnapshot.getString("isUser") != null){
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        return;
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+            });
+        }
+    }
 }
