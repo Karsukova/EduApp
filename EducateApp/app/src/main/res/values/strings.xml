@@ -62,7 +62,7 @@
     <string name="upload_notice">Загрузить заметку</string>
     <string name="upload_image">Загрузить изображение</string>
     <string name="upload_gallery">Загрузить изображение</string>
-    <string name="upload_pdf">Загрузить PDF</string>
+    <string name="upload_doc">Загрузить документ</string>
     <string name="group">Группы</string>
     <string name="del_notice">Удалить уведомление</string>
     <string name="select_image">Выберите изображение</string>
@@ -75,7 +75,12 @@
     <string name="other_events">Другие события</string>
     <string name="pls_upl_im">Пожалуйста, выберите изображение</string>
     <string name="pls_select_cat">Пожайлуйста, выберите категорию</string>
+    <string name="pls_select_doc">Пожалуйста, выберите документ</string>
+    <string name="doc_fail">Не удалось загрузить документ</string>
+    <string name="doc_success">Документ успешно загружен</string>
     <string name="image_uploaded">Изображение добавлено</string>
-
+    <string name="select_doc">Выберите документ</string>
+    <string name="no_file">Файл не выбран</string>
+    <string name="wait">Пожалуйста подождите...</string>
 
 </resources>

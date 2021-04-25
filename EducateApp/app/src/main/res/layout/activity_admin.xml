@@ -108,7 +108,7 @@
             android:layout_width="130dp"
             android:layout_height="150dp"
             android:layout_margin="10dp"
-            android:id="@+id/addPdf"
+            android:id="@+id/addDoc"
             app:cardElevation="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,7 +133,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/upload_pdf"
+                    android:text="@string/upload_doc"
+                    android:textAlignment="center"
                     android:textStyle="bold"
                     android:padding="5dp"
                     android:textSize="15sp"
