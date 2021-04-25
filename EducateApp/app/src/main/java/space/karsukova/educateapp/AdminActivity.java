@@ -12,14 +12,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
 
-    CardView uploadNotice;
+    CardView uploadNotice, addGalleryImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         uploadNotice = findViewById(R.id.addnotice);
+        addGalleryImage = findViewById(R.id.addGalleryImage);
         uploadNotice.setOnClickListener(this);
+        addGalleryImage.setOnClickListener(this);
         Button logout = findViewById(R.id.logoutBtn);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,9 +35,14 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()){
             case R.id.addnotice:
-                Intent intent = new Intent(AdminActivity.this, UploadNotice.class);
+                 intent = new Intent(AdminActivity.this, UploadNotice.class);
+                startActivity(intent);
+                break;
+            case R.id.addGalleryImage:
+                 intent = new Intent(AdminActivity.this, UploadImage.class);
                 startActivity(intent);
                 break;
 

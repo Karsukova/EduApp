@@ -118,7 +118,7 @@ public class LoginFragment extends Fragment {
         df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG", "onSuccess"+documentSnapshot.getData());
+                Log.d("TAG", "onSuccess"+ documentSnapshot.getData());
                 if(documentSnapshot.getString("isAdmin")!=null){
                     startActivity(new Intent(getActivity(), AdminActivity.class));
                     return;
@@ -131,6 +131,7 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -159,4 +160,6 @@ public class LoginFragment extends Fragment {
             });
         }
     }
+
+
 }

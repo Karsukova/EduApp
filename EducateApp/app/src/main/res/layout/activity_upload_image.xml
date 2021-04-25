@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:padding="16dp"
     android:layout_height="match_parent"
-    tools:context=".UploadNotice">
+    tools:context=".UploadImage">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:id="@+id/addImage"
+            android:id="@+id/addGalleryImage"
             app:cardElevation="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/circle_purple"
+                    android:background="@drawable/circle_yellow"
                     android:padding="15dp"
                     android:src="@drawable/ic_image">
 
@@ -62,19 +62,23 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/noticeTitle"
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/notice_title" />
+                android:id="@+id/image_category"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"/>
+
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/upload_notice"
+            android:text="@string/upload_image"
             android:layout_marginTop="16dp"
             android:textAllCaps="false"
-            android:id="@+id/uploadNoticeBtn">
+            android:id="@+id/uploadImageBtn">
         </com.google.android.material.button.MaterialButton>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -83,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:id="@+id/noticeImageView"
+                android:id="@+id/galleryImageView"
                 >
             </ImageView>
         </com.google.android.material.card.MaterialCardView>

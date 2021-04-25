@@ -13,8 +13,8 @@
         android:gravity="center"
         android:layout_margin="0dp">
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="120dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:id="@+id/addnotice"
             app:cardElevation="5dp">
@@ -25,8 +25,8 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:background="@drawable/circle_green"
                     android:padding="15dp"
                     android:layout_marginTop="7dp"
@@ -45,8 +45,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/upload_notice"
                     android:textStyle="bold"
-                    android:textSize="10sp"
-
+                    android:textSize="15sp"
+                    android:textAlignment="center"
 
                     android:padding="5dp"
                     android:textColor="@color/textColor">
@@ -56,8 +56,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="120dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:id="@+id/addGalleryImage"
             app:cardElevation="5dp">
@@ -67,8 +67,8 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_marginTop="7dp"
                     android:background="@drawable/circle_purple"
                     android:src="@drawable/ic_gallery"
@@ -86,8 +86,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/upload_gallery"
                     android:textStyle="bold"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:padding="5dp"
+                    android:textAlignment="center"
                     android:textColor="@color/textColor">
 
                 </TextView>
@@ -104,8 +105,8 @@
         android:gravity="center"
         android:layout_margin="0dp">
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:id="@+id/addPdf"
             app:cardElevation="5dp">
@@ -115,8 +116,8 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_marginTop="7dp"
                     android:background="@drawable/circle_pink"
                     android:src="@drawable/ic_upload"
@@ -135,7 +136,7 @@
                     android:text="@string/upload_pdf"
                     android:textStyle="bold"
                     android:padding="5dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="@color/textColor">
 
                 </TextView>
@@ -143,8 +144,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:id="@+id/faculty"
             app:cardElevation="5dp">
@@ -154,8 +155,8 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:background="@drawable/circle_yellow"
                     android:src="@drawable/ic_group"
                     android:layout_marginTop="7dp"
@@ -174,7 +175,7 @@
                     android:text="@string/group"
                     android:textStyle="bold"
                     android:padding="5dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="@color/textColor">
 
                 </TextView>
@@ -194,8 +195,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/delnotice"
-            android:layout_width="100dp"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             app:cardElevation="5dp">
 
@@ -206,8 +207,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_marginTop="7dp"
                     android:background="@drawable/circle_red"
                     android:padding="15dp"
@@ -223,7 +224,8 @@
                     android:padding="5dp"
                     android:text="@string/del_notice"
                     android:textColor="@color/textColor"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
+                    android:textAlignment="center"
                     android:textStyle="bold">
 
                 </TextView>
