@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+    <fragment android:id="@+id/navigation_home"
+        android:name="space.karsukova.educateapp.ui.home.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home"
+        />
+    <fragment android:id="@+id/navigation_notice"
+        android:name="space.karsukova.educateapp.ui.notice.NoticeFragment"
+        android:label="@string/notice"
+        tools:layout="@layout/fragment_notice"
+        />
+    <fragment android:id="@+id/navigation_gallery"
+        android:name="space.karsukova.educateapp.ui.gallery.GalleryFragment"
+        android:label="@string/gallery"
+        tools:layout="@layout/fragment_gallery"
+        />
+</navigation>

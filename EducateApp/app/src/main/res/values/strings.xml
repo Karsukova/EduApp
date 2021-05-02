@@ -82,5 +82,14 @@
     <string name="select_doc">Выберите документ</string>
     <string name="no_file">Файл не выбран</string>
     <string name="wait">Пожалуйста подождите...</string>
+    <string name="home">Домой</string>
+    <string name="notice">Заметки</string>
+    <string name="gallery">Галерея</string>
+    <string name="docs">Документы</string>
+    <string name="profile">Профиль</string>
+    <string name="start">Старт</string>
+    <string name="close">Закрыть</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="change_profile">Редактировать профиль</string>
 
 </resources>

@@ -1,9 +1,14 @@
 package space.karsukova.educateapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
@@ -21,16 +26,24 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
-    TabLayout tabs;
-    TabItem loginTabItem, registerTabItem;
-    ViewPager pager;
-    PagerAdapter adapter;
+import java.util.Objects;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private BottomNavigationView bottomNavigationView;
+    private NavController navController;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+
     TextView verifyMsg;
     Button verifuEmailBtn;
     FirebaseAuth auth;
@@ -40,12 +53,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_main);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        navController = Navigation.findNavController(this, R.id.frame_layout);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation_view);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
         auth = FirebaseAuth.getInstance();
-        Button logout = findViewById(R.id.logoutBtn);
+        //Button logout = findViewById(R.id.logoutBtn);
         verifyMsg=findViewById(R.id.verifyEmailMsg);
         verifuEmailBtn = findViewById(R.id.verifyEmailBtn);
         reset_alert = new AlertDialog.Builder(this);
@@ -71,85 +96,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if (toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return true;
+    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.navigation_profile:
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                finish();
+                break;
+            case R.id.navigation_doc:
+                Toast.makeText(this, "Docs", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.navigation_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.resetUserPassword){
-            startActivity(new Intent(getApplicationContext(), ResetPassword.class));
+                break;
         }
-
-        if(item.getItemId() == R.id.updateEmailMenu){
-            final View view = inflater.inflate(R.layout.reset_pop, null);
-            reset_alert.setTitle(R.string.update_email)
-                    .setMessage(R.string.enter_new_email)
-                    .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            EditText email = view.findViewById(R.id.reset_email_pop);
-                            if(email.getText().toString().isEmpty()){
-                                email.setError(getText(R.string.required_field));
-                                return;
-                            }
-                            FirebaseUser user = auth.getCurrentUser();
-                            user.updateEmail(email.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(MainActivity.this, R.string.email_updated, Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MainActivity.this, R.string.exception, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }).setNegativeButton(R.string.cancel, null)
-                    .setView(view)
-                    .create().show();
-        }
-        if(item.getItemId() == R.id.deletaAccountMenu){
-            reset_alert.setTitle(R.string.del_question)
-                    .setMessage(R.string.sure_question)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(MainActivity.this, R.string.account_del, Toast.LENGTH_SHORT).show();
-                                    auth.signOut();
-                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MainActivity.this, R.string.exception, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }).setNegativeButton(R.string.cancel, null)
-                    .create().show();
-
-        }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

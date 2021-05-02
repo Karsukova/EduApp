@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/navigation_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"/>
+
+    <item android:id="@+id/navigation_doc"
+        android:title="@string/docs"
+        android:icon="@drawable/ic_docs"/>
+
+    <item android:id="@+id/navigation_logout"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_logout"/>
+
+
+</menu>
