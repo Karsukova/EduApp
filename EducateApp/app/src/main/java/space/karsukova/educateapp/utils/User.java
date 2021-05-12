@@ -1,4 +1,4 @@
-package space.karsukova.educateapp;
+package space.karsukova.educateapp.utils;
 
 public class User {
 

@@ -7,20 +7,13 @@ import android.os.Bundle;
 
   import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import javax.annotation.Nullable;
@@ -65,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
             email    = findViewById(R.id.profileEmail);
             resetPassLocal = findViewById(R.id.resetPassword);
             deleteAccount = findViewById(R.id.deleteAccount);
-            profileImage = findViewById(R.id.profileImage);
+            profileImage = findViewById(R.id.groupImage);
             changeProfileImage = findViewById(R.id.changeProfile);
             reset_alert = new AlertDialog.Builder(this);
 

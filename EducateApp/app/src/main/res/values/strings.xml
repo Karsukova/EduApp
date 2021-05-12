@@ -91,5 +91,7 @@
     <string name="close">Закрыть</string>
     <string name="your_name">Ваше имя</string>
     <string name="change_profile">Редактировать профиль</string>
+    <string name="entr_group_name">Введите название группы</string>
+    <string name="description">Описание</string>
 
 </resources>

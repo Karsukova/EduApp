@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/resetPassword" />
 
     <ImageView
-        android:id="@+id/profileImage"
+        android:id="@+id/groupImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -140,7 +140,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage"
+        app:layout_constraintTop_toBottomOf="@+id/groupImage"
         app:layout_constraintVertical_bias="0.050000012"
         app:srcCompat="@drawable/ic_profile" />
 

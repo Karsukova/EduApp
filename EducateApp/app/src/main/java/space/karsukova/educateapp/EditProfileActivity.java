@@ -55,11 +55,11 @@ public class EditProfileActivity extends AppCompatActivity {
         user = fAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        profileFullName = findViewById(R.id.profileFullName);
-        profileEmail = findViewById(R.id.profileEmailAddress);
+        profileFullName = findViewById(R.id.groupName);
+        profileEmail = findViewById(R.id.groupDescription);
         profilePhone = findViewById(R.id.profilePhoneNo);
-        profileImageView = findViewById(R.id.profileImageView);
-        saveBtn = findViewById(R.id.saveProfileInfo);
+        profileImageView = findViewById(R.id.groupImageView);
+        saveBtn = findViewById(R.id.createGroup);
 
         StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

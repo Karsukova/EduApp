@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
 
-    CardView uploadNotice, addGalleryImage, addPdf, profile;
+    CardView uploadNotice, addGalleryImage, addPdf, profile, faculty;
 
 
     @Override
@@ -30,11 +30,13 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
         uploadNotice = findViewById(R.id.addnotice);
         addGalleryImage = findViewById(R.id.addGalleryImage);
         addPdf = findViewById(R.id.addDoc);
+        faculty = findViewById(R.id.faculty);
         profile = findViewById(R.id.profile);
         uploadNotice.setOnClickListener(this);
         addGalleryImage.setOnClickListener(this);
         addPdf.setOnClickListener(this);
         profile.setOnClickListener(this);
+        faculty.setOnClickListener(this);
 
         Button logout = findViewById(R.id.logoutBtn);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +69,10 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.profile:
                 intent = new Intent(AdminActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.faculty:
+                intent = new Intent(AdminActivity.this, FindGroupActivity.class);
                 startActivity(intent);
                 break;
 
