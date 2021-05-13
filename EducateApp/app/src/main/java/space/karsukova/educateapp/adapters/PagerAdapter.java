@@ -1,9 +1,12 @@
-package space.karsukova.educateapp;
+package space.karsukova.educateapp.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import space.karsukova.educateapp.LoginFragment;
+import space.karsukova.educateapp.RegisterFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 

@@ -3,7 +3,6 @@ package space.karsukova.educateapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -54,7 +53,7 @@ public class CreateGroup extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        groupName = findViewById(R.id.groupName);
+        groupName = findViewById(R.id.groupTitle);
         description = findViewById(R.id.groupDescription);
         createGroup = findViewById(R.id.createGroup);
         fStore = FirebaseFirestore.getInstance();
@@ -113,6 +112,7 @@ public class CreateGroup extends AppCompatActivity {
                             }
                         }
                     });
+
                 }
             }
         });
@@ -128,14 +128,14 @@ public class CreateGroup extends AppCompatActivity {
     }
 
 
-    private void createGroup(String g_timestamp, String groupTitle, String groupDescription, String groupIcon){
+    private void createGroup(final String g_timestamp, String groupTitle, String groupDescription, String groupIcon){
         final HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("groupId", "" + g_timestamp);
         hashMap.put("gropTitle", "" + groupTitle);
         hashMap.put("groupDescription", "" + groupDescription);
         hashMap.put("groupIcon", "" + groupIcon);
         hashMap.put("timeStamp", "" + g_timestamp);
-        hashMap.put("createdBy", "" + firebaseAuth.getCurrentUser());
+        hashMap.put("createdBy", "" + firebaseAuth.getUid());
 
 
         reference = FirebaseDatabase.getInstance().getReference("Groups");
@@ -143,6 +143,23 @@ public class CreateGroup extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 pd.dismiss();
+                HashMap<String,String> hashMap1 = new HashMap<>();
+                hashMap1.put("uid", firebaseAuth.getUid());
+                hashMap1.put("role", "creator");
+                hashMap1.put("timestamp", g_timestamp);
+                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
+                ref1.child(g_timestamp).child("Participants").child(firebaseAuth.getUid()).setValue(hashMap1)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CreateGroup.this, "Group created", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
                 Toast.makeText(CreateGroup.this, R.string.image_uploaded, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), FindGroupActivity.class));
             }

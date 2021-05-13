@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/groupImage"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -28,16 +28,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/circle_yellow"
-                android:padding="15dp"
                 android:src="@drawable/ic_group"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </ImageView>
+            </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
-                android:id="@+id/groupName"
+                android:id="@+id/groupTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -54,9 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Description"
-                app:layout_constraintEnd_toEndOf="@+id/groupName"
-                app:layout_constraintStart_toStartOf="@+id/groupName"
-                app:layout_constraintTop_toBottomOf="@+id/groupName" />
+                app:layout_constraintEnd_toEndOf="@+id/groupTitle"
+                app:layout_constraintStart_toStartOf="@+id/groupTitle"
+                app:layout_constraintTop_toBottomOf="@+id/groupTitle" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
