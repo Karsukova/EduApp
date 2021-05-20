@@ -12,18 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateGroup"></activity>
+        <activity android:name=".ViewGroupAdminActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".CreateGroup" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".FindGroupActivity" />
-        <activity android:name=".ViewGroups" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".UploadDocument" />
-        <activity android:name=".UploadImage" />
-        <activity android:name=".UploadNotice" />
-        <activity android:name=".AdminActivity" />
+        <activity android:name=".EditProfileActivity" android:theme="@style/AppTheme.NoActionBar.Material"/>
+        <activity android:name=".ProfileActivity" android:theme="@style/AppTheme.NoActionBar.Material"/>
+        <activity android:name=".UploadDocument" android:theme="@style/AppTheme.NoActionBar.Material"/>
+        <activity android:name=".UploadImage" android:theme="@style/AppTheme.NoActionBar.Material"/>
+        <activity android:name=".UploadNotice" android:theme="@style/AppTheme.NoActionBar.Material" />
+        <activity android:name=".AdminActivity" android:theme="@style/AppTheme.NoActionBar.Material" />
         <activity android:name=".VerifyPhone" />
         <activity android:name=".ResetPassword" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".FindGroupActivityUser" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -33,6 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ViewGroupInfo"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

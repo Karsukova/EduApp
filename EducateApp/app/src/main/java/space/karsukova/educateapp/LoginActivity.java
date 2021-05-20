@@ -9,13 +9,13 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-import space.karsukova.educateapp.adapters.PagerAdapter;
+import space.karsukova.educateapp.adapters.LoginPagerAdapter;
 
 public class LoginActivity extends AppCompatActivity {
     TabLayout tabs;
     TabItem loginTabItem, registerTabItem;
     ViewPager pager;
-    PagerAdapter adapter;
+    LoginPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         loginTabItem = findViewById(R.id.loginTab);
         registerTabItem = findViewById(R.id.registerTab);
         pager = findViewById(R.id.pager);
-        adapter = new PagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, tabs.getTabCount());
+        adapter = new LoginPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, tabs.getTabCount());
         pager.setAdapter(adapter);
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -93,5 +93,11 @@
     <string name="change_profile">Редактировать профиль</string>
     <string name="entr_group_name">Введите название группы</string>
     <string name="description">Описание</string>
+    <string name="send_request">Отправить заявку</string>
+    <string name="decline">Отменить заявку</string>
+    <string name="cancel_request">Запрос отменен</string>
+    <string name="groups">Группы</string>
+    <string name="requests">ЗАЯВКИ</string>
+    <string name="group_material">МАТЕРИАЛЫ</string>
 
 </resources>

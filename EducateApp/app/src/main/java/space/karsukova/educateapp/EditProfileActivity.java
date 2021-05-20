@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,10 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,18 +31,28 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     public static final String TAG = "TAG";
+
+    private final int REQ = 1;
     EditText profileFullName,profileEmail,profilePhone;
+    private DatabaseReference reference;
     ImageView profileImageView;
+    private Bitmap bitmap;
     Button saveBtn;
+    String downloadUrl ="";
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseUser user;
+    private Uri uri = null;
+
+    String fileRef1 = "";
     StorageReference storageReference;
 
     @Override
@@ -45,7 +60,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        Intent data = getIntent();
+        final Intent data = getIntent();
         final String fullName = data.getStringExtra("fullName");
         String email = data.getStringExtra("email");
         String phone = data.getStringExtra("phone");
@@ -56,6 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         profileFullName = findViewById(R.id.groupTitle);
+        reference = FirebaseDatabase.getInstance().getReference();
         profileEmail = findViewById(R.id.groupDescription);
         profilePhone = findViewById(R.id.profilePhoneNo);
         profileImageView = findViewById(R.id.groupImageView);
@@ -73,7 +89,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent,1000);
+                startActivityForResult(openGalleryIntent,REQ);
             }
         });
 
@@ -86,27 +102,31 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
 
                 final String email = profileEmail.getText().toString();
-                user.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] finalimg = baos.toByteArray();
+                final StorageReference filePath;
+                filePath = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+                final UploadTask uploadTask = filePath.putBytes(finalimg);
+                uploadTask.addOnCompleteListener(EditProfileActivity.this, new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        DocumentReference docRef = fStore.collection("Users").document(user.getUid());
-                        Map<String,Object> edited = new HashMap<>();
-                        edited.put("UserEmail",email);
-                        edited.put("FullName",profileFullName.getText().toString());
-                        edited.put("PhoneNumber",profilePhone.getText().toString());
-                        docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditProfileActivity.this, R.string.data_validated, Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                                finish();
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditProfileActivity.this,   e.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()){
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            downloadUrl = String.valueOf(uri);
+                                            updateUser(email, downloadUrl);
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Toast.makeText(EditProfileActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -125,23 +145,61 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000){
-            if(resultCode == Activity.RESULT_OK){
-                Uri imageUri = data.getData();
+        if(requestCode == REQ &&resultCode == RESULT_OK){
+                //final Uri imageUri = data.getData();
 
                 //profileImage.setImageURI(imageUri);
+                uri = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                profileImageView.setImageBitmap(bitmap);
 
-                uploadImageToFirebase(imageUri);
-
-
-            }
         }
+    }
 
+    private void updateUser(final String email, final String downloadUrl) {
+        user.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+            DocumentReference docRef = fStore.collection("users").document(user.getUid());
+            Map<String,Object> edited = new HashMap<>();
+            edited.put("UserEmail",email);
+            edited.put("FullName",profileFullName.getText().toString());
+            edited.put("PhoneNumber",profilePhone.getText().toString());
+            edited.put("UserIcon",  downloadUrl);
+            reference.child("users").child(fAuth.getUid()).updateChildren(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(EditProfileActivity.this, R.string.data_validated, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                    finish();
+                }
+            });
+            /*
+            docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            });
+
+             */
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(EditProfileActivity.this,   e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    });
     }
 
     private void uploadImageToFirebase(Uri imageUri) {
         // uplaod image to firebase storage
         final StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -158,6 +216,5 @@ public class EditProfileActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

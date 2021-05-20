@@ -1,4 +1,4 @@
-package space.karsukova.educateapp;
+package space.karsukova.educateapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,12 +28,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import space.karsukova.educateapp.R;
+import space.karsukova.educateapp.VerifyPhone;
 import space.karsukova.educateapp.utils.User;
 
 
 public class RegisterFragment extends Fragment {
 
     public static final String TAG = "TAG";
+
+    private DatabaseReference reference;
     private User user;
     private String number;
     private DatabaseReference mDatabase;
@@ -126,13 +130,14 @@ public class RegisterFragment extends Fragment {
                                 Intent phone = new Intent(getActivity(), VerifyPhone.class);
                                 number = phoneCC.getText().toString() + phoneNumber.getText().toString();
                                 phone.putExtra("number", number);
-                                //updateUI(user);
+
                                 //Toast.makeText(getActivity(), R.string.register_success, Toast.LENGTH_SHORT).show();
                                 DocumentReference df = fStore.collection("Users").document(user.getUid());
                                 Map<String,Object> userInfo = new HashMap<>();
                                 userInfo.put("FullName", registerFullName.getText().toString());
                                 userInfo.put("UserEmail", registerEmail.getText().toString());
                                 userInfo.put("PhoneNumber", phoneCC.getText().toString() + phoneNumber.getText().toString());
+                                userInfo.put("UserIcon", "");
                                 if(isTeacherBox.isChecked()){
                                     userInfo.put("isAdmin", "1");
                                     phone.putExtra("isAdmin", "1");
@@ -144,6 +149,20 @@ public class RegisterFragment extends Fragment {
                                 }
                                 df.set(userInfo);
 
+                                //updateUI(user);
+                                reference = FirebaseDatabase.getInstance().getReference("users");
+                                reference.child(fAuth.getUid()).setValue(userInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
 
 
                                 startActivity(phone);
@@ -161,7 +180,7 @@ public class RegisterFragment extends Fragment {
 
             public void updateUI(FirebaseUser currentUser) {
                 String keyid = mDatabase.push().getKey();
-                mDatabase.child(keyid).setValue(user); //adding user info to database
+                mDatabase.child(keyid).setValue(currentUser); //adding user info to database
             }
 
         });

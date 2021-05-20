@@ -11,6 +11,8 @@
     <color name="pink">#D242EC</color>
     <color name="red">#F73E7C</color>
     <color name="lightGray">#c1c1c1</color>
+    <color name="green1">#4CAF50</color>
+    <color name="red1">#F44336</color>
 
     <color name="textColor1">#3f3b3b</color>
     <color name="titleColor">#1b272c</color>

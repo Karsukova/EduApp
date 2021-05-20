@@ -139,9 +139,9 @@ public class CreateGroup extends AppCompatActivity {
 
 
         reference = FirebaseDatabase.getInstance().getReference("Groups");
-        reference.child(g_timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+                reference.child(g_timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
                 pd.dismiss();
                 HashMap<String,String> hashMap1 = new HashMap<>();
                 hashMap1.put("uid", firebaseAuth.getUid());

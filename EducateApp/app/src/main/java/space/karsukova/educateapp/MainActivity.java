@@ -116,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navigation_doc:
                 Toast.makeText(this, "Docs", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.navigation_groups:
+                startActivity(new Intent(getApplicationContext(), FindGroupActivityUser.class));
+                finish();
+                break;
             case R.id.navigation_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));

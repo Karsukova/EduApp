@@ -1,4 +1,4 @@
-package space.karsukova.educateapp;
+package space.karsukova.educateapp.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import space.karsukova.educateapp.AdminActivity;
+import space.karsukova.educateapp.LoginActivity;
+import space.karsukova.educateapp.MainActivity;
+import space.karsukova.educateapp.R;
 
 public class LoginFragment extends Fragment {
 

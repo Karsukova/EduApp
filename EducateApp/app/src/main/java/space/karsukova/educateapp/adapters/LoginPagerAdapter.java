@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import space.karsukova.educateapp.LoginFragment;
-import space.karsukova.educateapp.RegisterFragment;
+import space.karsukova.educateapp.fragments.LoginFragment;
+import space.karsukova.educateapp.fragments.RegisterFragment;
 
-public class PagerAdapter extends FragmentPagerAdapter {
+public class LoginPagerAdapter extends FragmentPagerAdapter {
 
     private int numberOfTabs;
 
-    public PagerAdapter(@NonNull FragmentManager fm, int behavior, int numberOfTabs) {
+    public LoginPagerAdapter(@NonNull FragmentManager fm, int behavior, int numberOfTabs) {
         super(fm, behavior);
         this.numberOfTabs = numberOfTabs;
     }

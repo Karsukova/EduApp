@@ -2,57 +2,68 @@ package space.karsukova.educateapp.utils;
 
 public class User {
 
-    private String email;
-    private String fullName;
-    private String phone;
-    private String password;
+    private String UserEmail;
+    private String FullName;
+    private String PhoneNumber;
     private boolean isAdmin;
+    private String Id;
+    private String UserIcon;
 
     public User() {}
 
-    public User(String fullName, String email) {
-        this.fullName = fullName;
-        this.email = email;
+
+    public User(String FullName,   String PhoneNumber, String UserEmail, String UserIcon) {
+        this.UserEmail = UserEmail;
+        this.FullName = FullName;
+        this.PhoneNumber = PhoneNumber;
+        this.UserIcon = UserIcon;
     }
 
-    public User(String fullName, String email,  String phone, boolean isAdmin) {
-        this.email = email;
-        this.fullName = fullName;
-        this.phone = phone;
-        this.isAdmin = isAdmin;
+    public String getUserEmail() {
+        return UserEmail;
     }
 
+    public String getFullName() {
+        return FullName;
+    }
 
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
 
-    public void setpassword(String password) {
-        this.password = password;
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public String getUserIcon() {
+        return UserIcon;
+    }
+
+    public void setUserEmail(String userEmail) {
+        UserEmail = userEmail;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        FullName = fullName;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
     }
 
-    public void setAdmin(boolean isAdmin) {this.isAdmin = isAdmin; }
-
-    public String getFullName() {
-        return fullName;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setId(String id) {
+        Id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUserIcon(String userIcon) {
+        UserIcon = userIcon;
     }
-
-    public String getpassword() {
-        return password;
-    }
-
-    public boolean getAdmin() {return isAdmin; }
 }

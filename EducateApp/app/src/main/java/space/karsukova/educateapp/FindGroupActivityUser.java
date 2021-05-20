@@ -1,25 +1,16 @@
 package space.karsukova.educateapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toolbar;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,18 +21,18 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import space.karsukova.educateapp.adapters.AdapterGroupList;
-import space.karsukova.educateapp.adapters.GroupPagerAdapter;
+import space.karsukova.educateapp.adapters.AdapterGroupListUser;
 import space.karsukova.educateapp.utils.Groups;
 
-public class FindGroupActivity extends AppCompatActivity {
+public class FindGroupActivityUser extends AppCompatActivity {
 
     private ArrayList<Groups> groupsArrayList;
-    private AdapterGroupList adapterGroupList;
+    private AdapterGroupListUser adapterGroupList;
+
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     StorageReference storageReference;
@@ -51,23 +42,14 @@ public class FindGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_group);
+        setContentView(R.layout.activity_find_group_user);
         recyclerView = findViewById(R.id.recyclerViewGroups);
-        FloatingActionButton fab_btn = findViewById(R.id.fab_btn);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Groups");
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-
         LoadGroups("");
-        fab_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CreateGroup.class));
-                finish();
-            }
-        });
 
 
     }
@@ -75,26 +57,21 @@ public class FindGroupActivity extends AppCompatActivity {
     private void LoadGroups(final String s) {
 
         groupsArrayList = new ArrayList<>();
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
-        final Query query = reference.orderByChild("Groups").startAt(s).endAt(s+"\uf8ff");
-                reference.addValueEventListener(new ValueEventListener() {
+        final Query query = reference.orderByChild("Groups").startAt(s).endAt(s + "\uf8ff");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupsArrayList.size();
-                for (DataSnapshot ds: snapshot.getChildren()){
-
-                    if(ds.child("Participants").child(firebaseAuth.getUid()).exists()){
-
-                        Groups groups = ds.getValue(Groups.class);
-                        if (groups.getGropTitle().toLowerCase().contains(s.toLowerCase()) ||
-                        groups.getGroupDescription().toLowerCase().contains(s.toLowerCase())){
-                            groupsArrayList.add(groups);
-                        }
-
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Groups groups = ds.getValue(Groups.class);
+                    if (groups.getGropTitle().toLowerCase().contains(s.toLowerCase()) ||
+                            groups.getGroupDescription().toLowerCase().contains(s.toLowerCase())) {
+                        groupsArrayList.add(groups);
                     }
+
                 }
-                adapterGroupList = new AdapterGroupList(FindGroupActivity.this, groupsArrayList);
+                adapterGroupList = new AdapterGroupListUser(FindGroupActivityUser.this, groupsArrayList);
                 recyclerView.setAdapter(adapterGroupList);
             }
 
@@ -103,6 +80,7 @@ public class FindGroupActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
