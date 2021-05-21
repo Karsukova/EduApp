@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import space.karsukova.educateapp.R;
-import space.karsukova.educateapp.ViewGroupInfo;
+import space.karsukova.educateapp.ViewItemInfo;
 import space.karsukova.educateapp.utils.Groups;
 
 public class AdapterGroupListUser extends RecyclerView.Adapter<AdapterGroupListUser.HolderGroupList> {
@@ -60,7 +60,7 @@ public class AdapterGroupListUser extends RecyclerView.Adapter<AdapterGroupListU
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewGroupInfo.class);
+                Intent intent = new Intent(context, ViewItemInfo.class);
                 intent.putExtra("groupId", groupId);
                 context.startActivity(intent);
             }

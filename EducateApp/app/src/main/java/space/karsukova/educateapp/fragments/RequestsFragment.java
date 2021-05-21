@@ -101,7 +101,7 @@ public class RequestsFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             User user = snapshot.getValue(User.class);
                             usersArrayList.add(user);
-                            adapterUserList = new AdapterUserList(getActivity(), usersArrayList);
+                            adapterUserList = new AdapterUserList(getActivity(), usersArrayList, groupId);
                             recyclerView.setAdapter(adapterUserList);
 
                         }

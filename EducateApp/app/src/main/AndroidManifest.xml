@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ViewGroupInfo"
+            android:name=".ViewItemInfo"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

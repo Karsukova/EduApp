@@ -96,7 +96,15 @@
     <string name="send_request">Отправить заявку</string>
     <string name="decline">Отменить заявку</string>
     <string name="cancel_request">Запрос отменен</string>
+    <string name="req_sent">Запрос на вступление в группу отправлен</string>
+    <string name="user_added">Пользователь добавлен</string>
+    <string name="cancel_user_req">Отклонить заявку</string>
+    <string name="del_from_group">Выйти из группы</string>
+    <string name="accept_request">Принять заявку</string>
+    <string name="decline_req">Заявка отклонена</string>
+    <string name="delete_user">Удалить из группы</string>
     <string name="groups">Группы</string>
+    <string name="user_deleted">Пользователь удален из группы</string>
     <string name="requests">ЗАЯВКИ</string>
     <string name="group_material">МАТЕРИАЛЫ</string>
 

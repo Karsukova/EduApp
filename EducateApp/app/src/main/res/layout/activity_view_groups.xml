@@ -5,7 +5,7 @@
     style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewGroupInfo">
+    tools:context=".ViewItemInfo">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

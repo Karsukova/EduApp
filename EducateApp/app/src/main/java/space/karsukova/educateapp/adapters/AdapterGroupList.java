@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import space.karsukova.educateapp.R;
 import space.karsukova.educateapp.ViewGroupAdminActivity;
-import space.karsukova.educateapp.ViewGroupInfo;
 import space.karsukova.educateapp.utils.Groups;
 
 public class AdapterGroupList extends RecyclerView.Adapter<AdapterGroupList.HolderGroupList> {

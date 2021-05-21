@@ -16,17 +16,19 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import space.karsukova.educateapp.R;
-import space.karsukova.educateapp.ViewGroupInfo;
+import space.karsukova.educateapp.ViewItemInfo;
 import space.karsukova.educateapp.utils.User;
 
 public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.HolderUserList> {
 
     private Context context;
     private ArrayList<User> users;
+    private String groupId;
 
-    public AdapterUserList(Context context, ArrayList<User> users) {
+    public AdapterUserList(Context context, ArrayList<User> users, String groupId) {
         this.context = context;
         this.users = users;
+        this.groupId = groupId;
     }
 
     @NonNull
@@ -43,6 +45,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.Holder
         final String userId = usersList.getId();
         String FullName = usersList.getFullName();
         String UserIcon = usersList.getUserIcon();
+        holder.description.setVisibility(View.GONE);
 
         try{
             Picasso.get().load(UserIcon).placeholder(R.drawable.ic_group).into(holder.userIcon);
@@ -55,8 +58,9 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewGroupInfo.class);
+                Intent intent = new Intent(context, ViewItemInfo.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("groupId", groupId);
                 context.startActivity(intent);
             }
         });
@@ -70,13 +74,15 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.Holder
 
     class HolderUserList extends RecyclerView.ViewHolder{
 
-        private TextView userName;
+        private TextView userName, description;
         private ImageView userIcon;
 
         public HolderUserList(@NonNull View itemView){
             super(itemView);
             userName = itemView.findViewById(R.id.groupTitle);
             userIcon = itemView.findViewById(R.id.groupImage);
+            description = itemView.findViewById(R.id.description);
+
         }
     }
 }
