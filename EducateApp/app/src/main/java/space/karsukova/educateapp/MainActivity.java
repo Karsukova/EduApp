@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.navigation_doc:
-                Toast.makeText(this, "Docs", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), DocumentActivity.class));
+                finish();
                 break;
             case R.id.navigation_groups:
                 startActivity(new Intent(getApplicationContext(), FindGroupActivityUser.class));

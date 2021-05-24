@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EducateApp</string>
+    <string name="app_name">Самолётик Online</string>
     <string name="verification_email_sent">Письмо с подтверждением отправлено</string>
     <string name="update_email">Вы действительно хотите обновить e-mail адрес?</string>
     <string name="enter_new_email">Введите новый e-mail адрес</string>
