@@ -107,5 +107,8 @@
     <string name="user_deleted">Пользователь удален из группы</string>
     <string name="requests">ЗАЯВКИ</string>
     <string name="group_material">МАТЕРИАЛЫ</string>
+    <string name="enter_task">Создайте задание</string>
+    <string name="pls_write_smth">Пожалуйста, напишите что-нибудь для публикации</string>
+    <string name="post_added">Задание добавлено</string>
 
 </resources>
