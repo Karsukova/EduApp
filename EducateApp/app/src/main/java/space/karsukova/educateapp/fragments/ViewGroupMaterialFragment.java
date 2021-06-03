@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,7 +44,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import space.karsukova.educateapp.AdminActivity;
+import space.karsukova.educateapp.MainActivity;
 import space.karsukova.educateapp.R;
+import space.karsukova.educateapp.utils.Comment;
 import space.karsukova.educateapp.utils.Post;
 
 public class ViewGroupMaterialFragment extends Fragment {
@@ -48,10 +55,11 @@ public class ViewGroupMaterialFragment extends Fragment {
     private static final int REQ = 101;
     ImageView addPost, sendPost;
     private String groupId;
+    FirebaseFirestore fStore;
 
     EditText inputPostDesc;
     Uri imageUri;
-    DatabaseReference userRef, postRef, groupRef;
+    DatabaseReference userRef, postRef, groupRef, CommentRef;
     ProgressDialog pd;
     StorageReference storageReference;
     FirebaseAuth firebaseAuth;
@@ -60,6 +68,8 @@ public class ViewGroupMaterialFragment extends Fragment {
     FirebaseRecyclerAdapter<Post, MyViewHolder> adapter;
     FirebaseRecyclerOptions<Post> options;
     RecyclerView recyclerView;
+    FirebaseRecyclerOptions<Comment> commmentOption;
+    FirebaseRecyclerAdapter<Comment, CommentViewHolder> commentAdapter;
 
 
     View view;
@@ -77,8 +87,11 @@ public class ViewGroupMaterialFragment extends Fragment {
         addPost = view.findViewById(R.id.addImagePost);
         sendPost = view.findViewById(R.id.sendPost);
         inputPostDesc = view.findViewById(R.id.inputAddPost);
+        fStore = FirebaseFirestore.getInstance();
+
         groupId = getActivity().getIntent().getStringExtra("groupId");
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
+        CommentRef = FirebaseDatabase.getInstance().getReference().child("Comments");
         postRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Posts");
         pd = new ProgressDialog(getActivity());
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -101,6 +114,19 @@ public class ViewGroupMaterialFragment extends Fragment {
             }
         });
         LoadPost();
+        DocumentReference df = fStore.collection("Users").document(firebaseUser.getUid());
+        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("TAG", "onSuccess"+ documentSnapshot.getData());
+
+                if (documentSnapshot.getString("isUser") != null){
+                    addPost.setVisibility(View.GONE);
+                    sendPost.setVisibility(View.GONE);
+                    inputPostDesc.setVisibility(View.GONE);
+                }
+            }
+        });
         
        
         return view;
@@ -110,15 +136,27 @@ public class ViewGroupMaterialFragment extends Fragment {
         options = new FirebaseRecyclerOptions.Builder<Post>().setQuery(postRef, Post.class).build();
         adapter = new FirebaseRecyclerAdapter<Post, MyViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i, @NonNull Post post) {
+            protected void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i, @NonNull Post post) {
+                final String postKey = getRef(i).getKey();
                 myViewHolder.postDesc.setText(post.getPostDesc());
                 myViewHolder.timeAgo.setText(post.getDate());
                 myViewHolder.username.setText(post.getUsername());
                 Picasso.get().load(post.getPostImageUrl()).into(myViewHolder.postImage);
                 Picasso.get().load(post.getUserProfileImageUrl()).into(myViewHolder.profileImage);
-
-
-
+                myViewHolder.counComments(postKey, firebaseUser.getUid(), CommentRef);
+                myViewHolder.commentSend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String comment = myViewHolder.inputComments.getText().toString();
+                        if (comment.isEmpty()){
+                            Toast.makeText(getActivity(), R.string.pls_write_smth, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            AddComment(myViewHolder, postKey, CommentRef, firebaseUser.getUid(), comment);
+                        }
+                    }
+                });
+                LoadComments(postKey);
             }
 
             @NonNull
@@ -131,6 +169,53 @@ public class ViewGroupMaterialFragment extends Fragment {
         };
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+
+    }
+
+    private void LoadComments(String postKey) {
+        MyViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        commmentOption = new FirebaseRecyclerOptions.Builder<Comment>().setQuery(CommentRef.child(postKey), Comment.class).build();
+        commentAdapter = new FirebaseRecyclerAdapter<Comment, CommentViewHolder>(commmentOption) {
+            @Override
+            protected void onBindViewHolder(@NonNull CommentViewHolder commentViewHolder, int i, @NonNull Comment comment) {
+                Picasso.get().load(comment.getProfileImageUrl()).into(commentViewHolder.profileImage);
+                commentViewHolder.username.setText(comment.getUsername());
+                commentViewHolder.comment.setText(comment.getComment());
+            }
+
+            @NonNull
+            @Override
+            public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_comment, parent, false);
+                return new CommentViewHolder(view);
+            }
+        };
+        commentAdapter.startListening();
+        MyViewHolder.recyclerView.setAdapter(commentAdapter);
+    }
+
+    private void AddComment(final MyViewHolder myViewHolder, String postKey, DatabaseReference commentRef, String uid, String comment) {
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        final String strDate = formatter.format(date);HashMap hashMap = new HashMap();
+        hashMap.put("date", strDate);
+        hashMap.put("username", username);
+        hashMap.put("profileImageUrl", profileImageView);
+        hashMap.put("comment", comment);
+        commentRef.child(postKey).push().updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getActivity(), R.string.comment_added, Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    myViewHolder.inputComments.setText(null);
+                }
+                else {
+                    Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 

@@ -26,9 +26,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
-import space.karsukova.educateapp.utils.Groups;
+import space.karsukova.educateapp.fragments.ViewGroupMaterialFragment;
 
-public class ViewItemInfo extends AppCompatActivity {
+public class ViewRequestItemInfo extends AppCompatActivity {
 
     private String groupId, userId;
     DatabaseReference reference, requestReference, participantReference;
@@ -88,7 +88,7 @@ public class ViewItemInfo extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(ViewItemInfo.this, R.string.user_deleted, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewRequestItemInfo.this, R.string.user_deleted, Toast.LENGTH_SHORT).show();
                         CurrentState = "nothing_happen";
                         performBtn.setText(R.string.send_request);
                         declineBtn.setVisibility(View.GONE);
@@ -102,7 +102,7 @@ public class ViewItemInfo extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(ViewItemInfo.this, R.string.decline_req, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewRequestItemInfo.this, R.string.decline_req, Toast.LENGTH_SHORT).show();
                         CurrentState = "he_sent_decline";
                         performBtn.setVisibility(View.GONE);
                         declineBtn.setVisibility(View.GONE);
@@ -119,9 +119,11 @@ public class ViewItemInfo extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     CurrentState = "participant";
-                    performBtn.setVisibility(View.GONE);
-                    declineBtn.setVisibility(View.VISIBLE);
-                    declineBtn.setText(R.string.del_from_group);
+                    startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
+                    finish();
+                    //performBtn.setVisibility(View.GONE);
+                    //declineBtn.setVisibility(View.VISIBLE);
+                    //declineBtn.setText(R.string.del_from_group);
                 }
             }
 
@@ -196,12 +198,12 @@ public class ViewItemInfo extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(ViewItemInfo.this, R.string.req_sent, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewRequestItemInfo.this, R.string.req_sent, Toast.LENGTH_SHORT).show();
                                 declineBtn.setVisibility(View.GONE);
                                 CurrentState = "I_sent_pending";
                                 performBtn.setText(R.string.decline);
                             } else {
-                                Toast.makeText(ViewItemInfo.this, R.string.error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewRequestItemInfo.this, R.string.error, Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -213,13 +215,13 @@ public class ViewItemInfo extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(ViewItemInfo.this, R.string.cancel_request, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewRequestItemInfo.this, R.string.cancel_request, Toast.LENGTH_SHORT).show();
                                 CurrentState = "nothing_happen";
                                 performBtn.setText(R.string.send_request);
                                 declineBtn.setVisibility(View.GONE);
 
                             } else {
-                                Toast.makeText(ViewItemInfo.this, R.string.error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewRequestItemInfo.this, R.string.error, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -240,7 +242,7 @@ public class ViewItemInfo extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Toast.makeText(ViewItemInfo.this, R.string.user_added, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ViewRequestItemInfo.this, R.string.user_added, Toast.LENGTH_SHORT).show();
                                                 CurrentState = "participant";
                                                 performBtn.setVisibility(View.GONE);
                                                 declineBtn.setText(R.string.delete_user);
@@ -258,6 +260,8 @@ public class ViewItemInfo extends AppCompatActivity {
                     });
         }
         if (CurrentState.equals("participant")) {
+            startActivity(new Intent(getApplicationContext(), ViewGroupMaterialFragment.class));
+            finish();
 
         }
     }

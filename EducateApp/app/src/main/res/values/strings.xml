@@ -110,5 +110,7 @@
     <string name="enter_task">Создайте задание</string>
     <string name="pls_write_smth">Пожалуйста, напишите что-нибудь для публикации</string>
     <string name="post_added">Задание добавлено</string>
+    <string name="enter_comment">Добавьте комментарий</string>
+    <string name="comment_added">Комментарий добавлен</string>
 
 </resources>

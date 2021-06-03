@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ViewItemInfo"
+            android:name=".ViewRequestItemInfo"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

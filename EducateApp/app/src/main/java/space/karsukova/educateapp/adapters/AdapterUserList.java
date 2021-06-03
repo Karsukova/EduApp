@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import space.karsukova.educateapp.R;
-import space.karsukova.educateapp.ViewItemInfo;
+import space.karsukova.educateapp.ViewRequestItemInfo;
 import space.karsukova.educateapp.utils.User;
 
 public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.HolderUserList> {
@@ -58,7 +58,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewItemInfo.class);
+                Intent intent = new Intent(context, ViewRequestItemInfo.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("groupId", groupId);
                 context.startActivity(intent);
