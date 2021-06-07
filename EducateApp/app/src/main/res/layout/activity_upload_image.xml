@@ -56,22 +56,12 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <EditText
+            android:id="@+id/textInput"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp">
+            android:layout_height="wrap_content"
+            android:hint="Введите название альбома" />
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_category"
-                android:spinnerMode="dropdown"
-                android:background="@android:drawable/btn_dropdown"
-                android:layout_gravity="center"
-                android:layout_marginVertical="16dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

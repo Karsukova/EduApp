@@ -9,9 +9,9 @@ import space.karsukova.educateapp.R;
 import space.karsukova.educateapp.fragments.RequestsFragment;
 import space.karsukova.educateapp.fragments.ViewGroupMaterialFragment;
 
-public class GroupPagerAdapter extends FragmentPagerAdapter {
+public class GroupPagerAdapterAdmin extends FragmentPagerAdapter {
 
-    public GroupPagerAdapter(@NonNull FragmentManager fm) {
+    public GroupPagerAdapterAdmin(@NonNull FragmentManager fm) {
         super(fm);
     }
 

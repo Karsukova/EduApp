@@ -1,81 +1,122 @@
 package space.karsukova.educateapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
+public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    CardView uploadNotice, addGalleryImage, addPdf, profile, faculty;
+    private BottomNavigationView bottomNavigationView;
+    private NavController navController;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+
+    TextView verifyMsg;
+    Button verifuEmailBtn;
+    FirebaseAuth auth;
+    AlertDialog.Builder reset_alert;
+    LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
-        uploadNotice = findViewById(R.id.addnotice);
-        addGalleryImage = findViewById(R.id.addGalleryImage);
-        addPdf = findViewById(R.id.addDoc);
-        faculty = findViewById(R.id.faculty);
-        profile = findViewById(R.id.profile);
-        uploadNotice.setOnClickListener(this);
-        addGalleryImage.setOnClickListener(this);
-        addPdf.setOnClickListener(this);
-        profile.setOnClickListener(this);
-        faculty.setOnClickListener(this);
+        setContentView(R.layout.activity_main);
 
-        Button logout = findViewById(R.id.logoutBtn);
-        logout.setOnClickListener(new View.OnClickListener() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        navController = Navigation.findNavController(this, R.id.frame_layout);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation_view);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        auth = FirebaseAuth.getInstance();
+        //Button logout = findViewById(R.id.logoutBtn);
+        verifyMsg=findViewById(R.id.verifyEmailMsg);
+        verifuEmailBtn = findViewById(R.id.verifyEmailBtn);
+        reset_alert = new AlertDialog.Builder(this);
+        inflater = this.getLayoutInflater();
+
+
+
+        if(!auth.getCurrentUser().isEmailVerified()){
+            verifuEmailBtn.setVisibility(View.VISIBLE);
+            verifyMsg.setVisibility(View.VISIBLE);
+        }
+        verifuEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                auth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AdminActivity.this, R.string.verification_email_sent, Toast.LENGTH_SHORT).show();
+                        verifuEmailBtn.setVisibility(View.GONE);
+                        verifyMsg.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if (toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return true;
+    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.navigation_profile:
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                finish();
+                break;
+            case R.id.navigation_doc:
+                startActivity(new Intent(getApplicationContext(), DocumentActivity.class));
+                finish();
+                break;
+            case R.id.navigation_groups:
+                startActivity(new Intent(getApplicationContext(), FindGroupActivity.class));
+                finish();
+                break;
+            case R.id.navigation_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
-            }
-        });
-    }
-
-
-
-    @Override
-    public void onClick(View v) {
-        Intent intent;
-        switch (v.getId()){
-            case R.id.addnotice:
-                 intent = new Intent(AdminActivity.this, UploadNotice.class);
-                startActivity(intent);
                 break;
-            case R.id.addGalleryImage:
-                 intent = new Intent(AdminActivity.this, UploadImage.class);
-                startActivity(intent);
-                break;
-            case R.id.addDoc:
-                intent = new Intent(AdminActivity.this, UploadDocument.class);
-                startActivity(intent);
-                break;
-            case R.id.profile:
-                intent = new Intent(AdminActivity.this, ProfileActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.faculty:
-                intent = new Intent(AdminActivity.this, FindGroupActivity.class);
-                startActivity(intent);
-                break;
-
         }
+        return true;
     }
 }

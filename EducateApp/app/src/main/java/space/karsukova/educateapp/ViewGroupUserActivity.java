@@ -8,18 +8,20 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 
 import space.karsukova.educateapp.adapters.GroupPagerAdapterAdmin;
+import space.karsukova.educateapp.adapters.GroupPagerAdapterUser;
 
-public class ViewGroupAdminActivity extends AppCompatActivity {
+public class ViewGroupUserActivity extends AppCompatActivity {
     private ViewPager viewPager;
-    private GroupPagerAdapterAdmin groupPagerAdapter;
+    private GroupPagerAdapterUser groupPagerAdapter;
     private TabLayout tabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_group_admin);
+        setContentView(R.layout.activity_view_group_user);
         viewPager = (ViewPager) findViewById(R.id.tabPagerGroup);
-        groupPagerAdapter = new GroupPagerAdapterAdmin(getSupportFragmentManager());
+        groupPagerAdapter = new GroupPagerAdapterUser(getSupportFragmentManager());
 
         viewPager.setAdapter(groupPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.groupTabs);

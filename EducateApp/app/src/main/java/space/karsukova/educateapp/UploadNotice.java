@@ -27,7 +27,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -128,7 +127,7 @@ public class UploadNotice extends AppCompatActivity{
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
                 Toast.makeText(UploadNotice.this, R.string.notice_upload, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                startActivity(new Intent(getApplicationContext(), SuperAdminActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

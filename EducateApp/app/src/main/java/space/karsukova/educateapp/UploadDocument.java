@@ -134,7 +134,7 @@ public class UploadDocument extends AppCompatActivity {
                 progressDialog.dismiss();
                 Toast.makeText(UploadDocument.this, R.string.doc_success, Toast.LENGTH_SHORT).show();
                 docTitle.setText("");
-                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                startActivity(new Intent(getApplicationContext(), SuperAdminActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

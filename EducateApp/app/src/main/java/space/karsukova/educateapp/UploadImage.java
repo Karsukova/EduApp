@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,8 +40,9 @@ public class UploadImage extends AppCompatActivity {
     private Spinner imageCategory;
     private CardView selectImage;
     private Button uploadImage;
+    String cat = "";
     private ImageView galleryImageView;
-    private String category;
+    private EditText category;
     private final int REQ = 1;
     private Bitmap bitmap;
     ProgressDialog pd;
@@ -52,14 +55,14 @@ public class UploadImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
         selectImage = findViewById(R.id.addGalleryImage);
-        imageCategory = findViewById(R.id.image_category);
+        category = findViewById(R.id.textInput);
         uploadImage = findViewById(R.id.uploadImageBtn);
         galleryImageView = findViewById(R.id.galleryImageView);
         reference = FirebaseDatabase.getInstance().getReference().child("gallery");
         storageReference = FirebaseStorage.getInstance().getReference().child("gallery");
         pd = new ProgressDialog(this);
 
-
+ /*
         String [] items = new String[]{getString(R.string.select_category), getString(R.string.convocation), getString(R.string.other_events)};
         imageCategory.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items));
 
@@ -74,6 +77,8 @@ public class UploadImage extends AppCompatActivity {
 
             }
         });
+
+  */
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,9 +88,10 @@ public class UploadImage extends AppCompatActivity {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 cat = category.getText().toString();
                 if(bitmap == null){
                     Toast.makeText(UploadImage.this, R.string.pls_upl_im, Toast.LENGTH_SHORT).show();
-                } else if(category.equals(getString(R.string.select_category))){
+                } else if(cat.isEmpty()){
                     Toast.makeText(UploadImage.this, R.string.pls_select_cat, Toast.LENGTH_SHORT).show();
                 } else {
                     pd.setMessage(getText(R.string.uploading));
@@ -128,14 +134,14 @@ public class UploadImage extends AppCompatActivity {
     }
 
     private void uploadData() {
-        reference = reference.child(category);
+        reference = reference.child(cat);
         final String uniqueKey = reference.push().getKey();
         reference.child(uniqueKey).setValue(downloadUrl).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 pd.dismiss();
                 Toast.makeText(UploadImage.this, R.string.image_uploaded, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                startActivity(new Intent(getApplicationContext(), SuperAdminActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -119,7 +119,7 @@ public class VerifyPhone extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Toast.makeText(VerifyPhone.this, R.string.phone_success, Toast.LENGTH_SHORT).show();
                     if(isAdmin!=null){
-                        startActivity(new Intent(VerifyPhone.this, AdminActivity.class));
+                        startActivity(new Intent(VerifyPhone.this, MainActivity.class));
                         return;
 
                     }

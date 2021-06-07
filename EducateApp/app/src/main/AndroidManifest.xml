@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ViewGroupUserActivity"></activity>
         <activity android:name=".DocumentActivity" />
         <activity
             android:name=".ViewGroupAdminActivity"
@@ -36,8 +37,10 @@
             android:name=".UploadNotice"
             android:theme="@style/AppTheme.NoActionBar.Material" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".SuperAdminActivity"
             android:theme="@style/AppTheme.NoActionBar.Material" />
+        <activity
+            android:name=".AdminActivity" />
         <activity android:name=".VerifyPhone" />
         <activity android:name=".ResetPassword" />
         <activity android:name=".MainActivity" />

@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,9 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    FirebaseFirestore fStore;
+
 
     TextView verifyMsg;
     Button verifuEmailBtn;
@@ -62,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.navigation_view);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
         drawerLayout.addDrawerListener(toggle);
+        fStore = FirebaseFirestore.getInstance();
+
         toggle.syncState();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -78,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        if(!auth.getCurrentUser().isEmailVerified()){
-            verifuEmailBtn.setVisibility(View.VISIBLE);
-            verifyMsg.setVisibility(View.VISIBLE);
+        if(auth.getCurrentUser().isEmailVerified()){
+            verifuEmailBtn.setVisibility(View.GONE);
+            verifyMsg.setVisibility(View.GONE);
         }
         verifuEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,8 +126,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.navigation_groups:
-                startActivity(new Intent(getApplicationContext(), FindGroupActivityUser.class));
-                finish();
+                DocumentReference df = fStore.collection("Users").document(auth.getUid());
+                df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d("TAG", "onSuccess"+ documentSnapshot.getData());
+
+                        if (documentSnapshot.getString("isUser") != null){
+                            Intent intent = new Intent(MainActivity.this, FindGroupActivityUser.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), FindGroupActivity.class));
+                        finish();
+                        }
+                    }
+                });
+
                 break;
             case R.id.navigation_logout:
                 FirebaseAuth.getInstance().signOut();

@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import space.karsukova.educateapp.AdminActivity;
+import space.karsukova.educateapp.SuperAdminActivity;
 import space.karsukova.educateapp.LoginActivity;
 import space.karsukova.educateapp.MainActivity;
 import space.karsukova.educateapp.R;
@@ -124,8 +125,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "onSuccess"+ documentSnapshot.getData());
+                if(documentSnapshot.getString("isSuperAdmin")!=null){
+                    startActivity(new Intent(getActivity(), SuperAdminActivity.class));
+                    return;
+
+                }
                 if(documentSnapshot.getString("isAdmin")!=null){
-                    startActivity(new Intent(getActivity(), AdminActivity.class));
+                    startActivity(new Intent(getActivity(), MainActivity.class));
                     return;
 
                 }
@@ -145,8 +151,13 @@ public class LoginFragment extends Fragment {
             df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.getString("isSuperAdmin")!=null){
+                        startActivity(new Intent(getActivity(), SuperAdminActivity.class));
+                        return;
+
+                    }
                     if(documentSnapshot.getString("isAdmin")!=null){
-                        startActivity(new Intent(getActivity(), AdminActivity.class));
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         return;
 
                     }

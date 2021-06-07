@@ -3,8 +3,11 @@ package space.karsukova.educateapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +25,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -31,12 +37,15 @@ import space.karsukova.educateapp.fragments.ViewGroupMaterialFragment;
 public class ViewRequestItemInfo extends AppCompatActivity {
 
     private String groupId, userId;
+    private Context context;
     DatabaseReference reference, requestReference, participantReference;
     private ImageView groupIconIv;
     private TextView groupTitleTv;
     private TextView descriptionTv;
     private Button performBtn, declineBtn;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore fStore;
+
     FirebaseUser firebaseUser;
     String CurrentState = "nothing_happen";
 
@@ -44,6 +53,7 @@ public class ViewRequestItemInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_groups);
+        fStore = FirebaseFirestore.getInstance();
 
         requestReference = FirebaseDatabase.getInstance().getReference().child("Requests");
         reference = FirebaseDatabase.getInstance().getReference().child("Groups");
@@ -119,11 +129,23 @@ public class ViewRequestItemInfo extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     CurrentState = "participant";
-                    startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
-                    finish();
-                    //performBtn.setVisibility(View.GONE);
-                    //declineBtn.setVisibility(View.VISIBLE);
-                    //declineBtn.setText(R.string.del_from_group);
+                    DocumentReference df = fStore.collection("Users").document(firebaseUser.getUid());
+                    df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Log.d("TAG", "onSuccess"+ documentSnapshot.getData());
+
+                            if (documentSnapshot.getString("isUser") != null){
+                                Intent intent = new Intent(ViewRequestItemInfo.this, ViewGroupUserActivity.class);
+                                intent.putExtra("groupId", groupId);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+
+                    performBtn.setVisibility(View.GONE);
+                    declineBtn.setVisibility(View.VISIBLE);
+                    declineBtn.setText(R.string.del_from_group);
                 }
             }
 

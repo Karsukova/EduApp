@@ -44,8 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-import space.karsukova.educateapp.AdminActivity;
-import space.karsukova.educateapp.MainActivity;
 import space.karsukova.educateapp.R;
 import space.karsukova.educateapp.utils.Comment;
 import space.karsukova.educateapp.utils.Post;
@@ -94,7 +92,7 @@ public class ViewGroupMaterialFragment extends Fragment {
         CommentRef = FirebaseDatabase.getInstance().getReference().child("Comments");
         postRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Posts");
         pd = new ProgressDialog(getActivity());
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerViewGallery);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
